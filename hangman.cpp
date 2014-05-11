@@ -5,10 +5,12 @@ int main(){
 	Hangman hangman;
 	while(hangman.is_completed() == false){
 		if(hangman.get_num_wrong() == MAX_GUESSES) break;
+		hangman.print_man();
 		hangman.print_guesses();
 		hangman.ask_guess();
 		hangman.is_correct();
 	}
+	hangman.print_man();
 	hangman.print_guesses();
 	hangman.print_end_game();
 
@@ -21,7 +23,8 @@ Hangman::Hangman(){
 	this->m_num_wrong = 0;
 	this->m_guess = ' ';
 	m_word= "llama";
-	make_guesses_blank();
+	init_guesses_blank();
+	init_man_blank();
 }
 
 
@@ -36,7 +39,7 @@ void Hangman::set_word(std::string word){ m_word= word; }
 
 
 
-void Hangman::make_guesses_blank(){
+void Hangman::init_guesses_blank(){
 	for(int i = 0; i < (int)( get_word().size() ); i++){
 		this->m_guesses.push_back('_');
 	}
@@ -44,8 +47,20 @@ void Hangman::make_guesses_blank(){
 
 
 
+void Hangman::init_man_blank(){
+	m_man[0] = "________   ";
+	m_man[1] = "|       |  ";
+	m_man[2] = "|          ";//(2,8)
+	m_man[3] = "|          ";//(3,8)(3,7)(3,9)
+	m_man[4] = "|          ";//(4,8)
+	m_man[5] = "|          ";//(5,7)(5,9)
+	m_man[6] = "|          ";
+}
+
+
+
 void Hangman::print_guesses(){
-	std::cout << std::endl;
+	std::cout << "WORD: ";
 	for(int i = 0; i < (int)( get_word().size() ); i++){
 		std::cout << get_guesses()[i] << " ";
 	}
@@ -64,6 +79,33 @@ void Hangman::print_end_game(){
 	}
 }
 
+
+
+void Hangman::print_man(){
+	switch(get_num_wrong()){
+		case MAX_GUESSES: {
+			m_man[5][9] = '\\';
+		}
+		case (MAX_GUESSES-1): m_man[5][7] = '/';
+		case (MAX_GUESSES-2): m_man[4][8] = '|';
+		case (MAX_GUESSES-3): m_man[3][9] = '\\';
+		case (MAX_GUESSES-4): m_man[3][7] = '/';
+		case (MAX_GUESSES-5): m_man[3][8] = '|';
+		case (MAX_GUESSES-6): {
+				m_man[2][8] = 'O';
+				break;
+		}
+		default: break;
+	}
+	for(int i = 0; i <= NUM_HANGMAN_COLS; i++){
+		if(i == NUM_HANGMAN_COLS){
+			std::cout << m_man[i];
+		}else{
+			std::cout << m_man[i] << std::endl;
+		}
+	}
+
+}
 
 
 void Hangman::ask_guess(void){

@@ -1,7 +1,9 @@
 #include <iostream>
 #include <stdio.h> //printf
 
-#define MAX_GUESSES 8
+#define MAX_GUESSES 7
+#define NUM_HANGMAN_ROWS 10
+#define NUM_HANGMAN_COLS 6
 
 class Hangman{
 	public:
@@ -15,7 +17,8 @@ class Hangman{
 		void set_num_wrong(int num_wrong);
 		void set_word(std::string word);
 
-		void make_guesses_blank();
+		void init_guesses_blank();
+		void init_man_blank();
 		void print_guesses();
 		void print_end_game();
 		void print_man();
@@ -29,4 +32,5 @@ class Hangman{
 		char m_guess;
 		std::string m_guesses;
 		std::string m_word;
+		std::string m_man[7];
 };
