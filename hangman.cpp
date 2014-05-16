@@ -25,6 +25,11 @@ int main(int argc, char** argv){
 	*/
 
 	while(hangman.is_completed() == false){
+
+		#ifdef _WIN32
+			system("CLS");//Windows ONLY
+		#endif
+
 		if(hangman.get_num_wrong() == MAX_GUESSES) break;
 		hangman.print_man();
 		hangman.update_guesses();
